@@ -1,5 +1,5 @@
 ## Introduction
-this repository is the implementation of MTCNN in tensorflow
+this repository is the implementation of MTCNN in tensorflow, modified from the [mtcnn](https://github.com/Seanlinx/mtcnn)
 * `core`: core routines for MTCNN training and testing.
 * `data`: Refer to `Data Folder Structure` for dataset reference. Usually dataset contains `images` and `imglists` 
 * `model`: Folder to save training symbol and model
