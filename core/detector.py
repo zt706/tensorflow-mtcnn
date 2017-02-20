@@ -4,14 +4,14 @@ import numpy as np
 from config import config
 
 class Detector(object):
-    def __init__(self, net_factory, data_size, batch_size, mdoel_path):
+    def __init__(self, net_factory, data_size, batch_size, model_path):
         graph=tf.Graph()
         with graph.as_default():
             self.image_op=tf.placeholder(tf.float32,shape=[batch_size,data_size,data_size,3],name='input_image')
             self.cls_prob,self.bbox_pred=net_factory(self.image_op,training=False)
             self.sess=tf.Session(config=tf.ConfigProto( allow_soft_placement=True, gpu_options=tf.GPUOptions(allow_growth=True)))
             saver=tf.train.Saver()
-            saver.restore(sess,model_path)
+            saver.restore(self.sess,model_path)
 
         self.data_size = data_size
         self.batch_size = batch_size
@@ -48,5 +48,4 @@ class Detector(object):
             cls_prob_list.append(cls_prob[:real_size])
             bbox_pred_list.append(bbox_pred[:real_size])
 
-
-        return np.hstack(cls_prob_list),np.hstack(bbox_pred_list)
+        return np.concatenate(cls_prob_list,axis=0),np.concatenate(bbox_pred_list,axis=0)

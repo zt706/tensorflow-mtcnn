@@ -5,13 +5,14 @@ import cPickle
 import cv2
 import sys
 sys.path.append('../')
-from core.symbol import P_Net, R_Net, O_Net
+sys.path.insert(0, "/home/zhangboyu/tensorflow/_python_build")
+os.environ.setdefault('CUDA_VISIBLE_DEVICES','6')
+from core.model import P_Net, R_Net, O_Net
 from core.imdb import IMDB
 from config import config
 from core.loader import TestLoader
 from core.detector import Detector
 from core.fcn_detector import FcnDetector
-from tools.load_model import load_param
 from core.MtcnnDetector import MtcnnDetector
 from utils import *
 
@@ -128,13 +129,13 @@ def save_hard_example(net):
     f3.close()
 
 def test_net(root_path, dataset_path, image_set, prefix, epoch,
-             batch_size, ctx, test_mode="rnet",
+             batch_size, test_mode="rnet",
              thresh=[0.6, 0.6, 0.7], min_face_size=24,
              stride=2, slide_window=False, shuffle=False, vis=False):
 
     detectors = [None, None, None]
 
-    model_path=['%s-%s'%(prefix,epoch) for x,y in zip(prefix,epoch)]
+    model_path=['%s-%s'%(x,y) for x,y in zip(prefix,epoch)]
     # load pnet model
     if slide_window:
         PNet = Detector(P_Net, 12, batch_size[0],model_path[0])
@@ -187,15 +188,15 @@ def parse_args():
     parser.add_argument('--test_mode', dest='test_mode', help='test net type, can be pnet, rnet or onet',
                         default='rnet', type=str)
     parser.add_argument('--prefix', dest='prefix', help='prefix of model name', nargs="+",
-                        default=['../data/model/pnet', '../data/model/rnet', '../data/model/onet'], type=str)
+                        default=['../data/wider_model/pnet', '../data/wider_model/rnet', '../data/wider_model/onet'], type=str)
     parser.add_argument('--epoch', dest='epoch', help='epoch number of model to load', nargs="+",
                         default=[16, 16, 16], type=int)
     parser.add_argument('--batch_size', dest='batch_size', help='list of batch size used in prediction', nargs="+",
                         default=[2048, 256, 16], type=int)
     parser.add_argument('--thresh', dest='thresh', help='list of thresh for pnet, rnet, onet', nargs="+",
-                        default=[0.2, 0.2, 0.7], type=float)
+                        default=[0.4, 0.05, 0.7], type=float)
     parser.add_argument('--min_face', dest='min_face', help='minimum face size for detection',
-                        default=24, type=int)
+                        default=16, type=int)
     parser.add_argument('--stride', dest='stride', help='stride of sliding window',
                         default=2, type=int)
     parser.add_argument('--sw', dest='slide_window', help='use sliding window in pnet', action='store_true')

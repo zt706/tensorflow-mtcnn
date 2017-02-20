@@ -53,8 +53,8 @@ custom (datasets for testing)
 
 ## Results
 
-will update in few days!
-    
+![image](https://github.com/brantbzhang/tensorflow-mtcnn/blob/master/DiscROC.png)
+
 ## License
 MIT LICENSE
 

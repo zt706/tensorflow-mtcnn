@@ -6,7 +6,7 @@ from train import train_net
 from core.model import O_Net
 
 data_name='wider'
-model_path='../data/%s_model/pnet'%data_name
+model_path='../data/%s_model/onet'%data_name
 
 def train_O_net(image_set, root_path, dataset_path, prefix,
                 end_epoch, frequent, lr):

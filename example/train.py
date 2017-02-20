@@ -51,7 +51,7 @@ def train_net(net_factory,prefix,end_epoch,imdb,
     saver=tf.train.Saver()
     sess.run(tf.global_variables_initializer())
 
-    for cur_epoch in range(end_epoch):
+    for cur_epoch in range(1,end_epoch+1):
         train_data.reset()
         accuracy_list=[]
         cls_loss_list=[]

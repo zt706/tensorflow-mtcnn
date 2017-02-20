@@ -61,15 +61,15 @@ class IMDB(object):
         gt_imdb: dict
             image database with annotations
         """
-        cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
-        if os.path.exists(cache_file):
-            with open(cache_file, 'rb') as f:
-                imdb = cPickle.load(f)
-            print '{} gt imdb loaded from {}'.format(self.name, cache_file)
-            return imdb
+        #cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
+        #if os.path.exists(cache_file):
+        #    with open(cache_file, 'rb') as f:
+        #        imdb = cPickle.load(f)
+        #    print '{} gt imdb loaded from {}'.format(self.name, cache_file)
+        #    return imdb
         gt_imdb = self.load_annotations()
-        with open(cache_file, 'wb') as f:
-            cPickle.dump(gt_imdb, f, cPickle.HIGHEST_PROTOCOL)
+        #with open(cache_file, 'wb') as f:
+        #    cPickle.dump(gt_imdb, f, cPickle.HIGHEST_PROTOCOL)
         return gt_imdb
 
 

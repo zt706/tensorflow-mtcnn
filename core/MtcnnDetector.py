@@ -338,14 +338,13 @@ face candidates:%d, current batch_size:%d"%(num_boxes, batch_size)
 face candidates:%d, current batch_size:%d"%(num_boxes, batch_size)
         '''
 
-        cropped_ims = np.zeros((num_boxes, 3, 24, 24), dtype=np.float32)
+        cropped_ims = np.zeros((num_boxes, 24, 24, 3), dtype=np.float32)
         for i in range(num_boxes):
             tmp = np.zeros((tmph[i], tmpw[i], 3), dtype=np.uint8)
             tmp[dy[i]:edy[i]+1, dx[i]:edx[i]+1, :] = im[y[i]:ey[i]+1, x[i]:ex[i]+1, :]
-            cropped_ims[i, :, :, :] = image_processing.transform(cv2.resize(tmp, (24, 24)))
+            cropped_ims[i, :, :, :] = cv2.resize(tmp, (24, 24))/127.5
 
         cls_scores, reg = self.rnet_detector.predict(cropped_ims)
-        cls_scores = cls_scores[:, 1].flatten()
         keep_inds = np.where(cls_scores > self.thresh[1])[0]
 
         if len(keep_inds) > 0:
@@ -395,14 +394,13 @@ face candidates:%d, current batch_size:%d"%(num_boxes, batch_size)
 face candidates:%d, current batch_size:%d"%(num_boxes, batch_size)
         '''
 
-        cropped_ims = np.zeros((num_boxes, 3, 48, 48), dtype=np.float32)
+        cropped_ims = np.zeros((num_boxes, 48, 48, 3), dtype=np.float32)
         for i in range(num_boxes):
             tmp = np.zeros((tmph[i], tmpw[i], 3), dtype=np.uint8)
             tmp[dy[i]:edy[i]+1, dx[i]:edx[i]+1, :] = im[y[i]:ey[i]+1, x[i]:ex[i]+1, :]
-            cropped_ims[i, :, :, :] = image_processing.transform(cv2.resize(tmp, (48, 48)))
-        cls_scores, reg = self.onet_detector.predict(cropped_ims)
+            cropped_ims[i, :, :, :] = cv2.resize(tmp, (48, 48))/127.5
 
-        cls_scores = cls_scores[:, 1].flatten()
+        cls_scores, reg = self.onet_detector.predict(cropped_ims)
         keep_inds = np.where(cls_scores > self.thresh[2])[0]
 
         if len(keep_inds) > 0:

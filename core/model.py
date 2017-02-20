@@ -74,7 +74,7 @@ def R_Net(inputs,label=None,bbox_target=None,training=True):
 
         net=slim.flatten(net)
         cls_prob=slim.fully_connected(net,1,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=tf.sigmoid,scope='fc2')
-        bbox_pred=slim.fully_connected(net,4,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=None,scope='fc4')
+        bbox_pred=slim.fully_connected(net,4,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=None,scope='fc3')
 
         cls_prob=tf.squeeze(cls_prob, [1], name='cls_prob')
         if training:
@@ -87,21 +87,25 @@ def R_Net(inputs,label=None,bbox_target=None,training=True):
 def O_Net(inputs,label=None,bbox_target=None,training=True):
     with slim.arg_scope([slim.conv2d],normalizer_fn=None,weights_initializer=slim.xavier_initializer(),activation_fn=prelu,biases_initializer=tf.zeros_initializer(),padding='valid'):
         net=slim.conv2d(inputs,32,kernel_size=3,scope='conv1')
-        net=slim.max_pool2d(net,[3,3],stride=2,scope='pool1')
+        net=slim.max_pool2d(net,[3,3],stride=2,scope='pool1',padding='same')
+        print net.get_shape()
 
         net=slim.conv2d(net,64,kernel_size=3,scope='conv2')
         net=slim.max_pool2d(net,[3,3],stride=2,scope='pool2')
+        print net.get_shape()
 
         net=slim.conv2d(net,64,kernel_size=3,scope='conv3')
         net=slim.max_pool2d(net,[2,2],stride=2,scope='pool3')
+        print net.get_shape()
 
         net=slim.conv2d(net,128,kernel_size=2,scope='conv4')
+        print net.get_shape()
 
         net=slim.fully_connected(net,256,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=prelu,scope='fc1')
 
         net=slim.flatten(net)
         cls_prob=slim.fully_connected(net,1,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=tf.sigmoid,scope='fc2')
-        bbox_pred=slim.fully_connected(net,4,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=None,scope='fc4')
+        bbox_pred=slim.fully_connected(net,4,normalizer_fn=None,biases_initializer=tf.zeros_initializer(),activation_fn=None,scope='fc3')
 
         cls_prob=tf.squeeze(cls_prob, [1], name='cls_prob')
         if training:

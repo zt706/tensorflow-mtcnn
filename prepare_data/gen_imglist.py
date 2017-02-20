@@ -5,7 +5,7 @@ import os
 data_dir='../data/wider'
 anno_file = os.path.join(data_dir,"anno.txt")
 
-size = 12
+size = 48
 
 if size == 12:
     net = "pnet"
@@ -30,10 +30,11 @@ with open(os.path.join(dir_path,"train_%s.txt"%( size)), "w") as f:
     nums=[len(neg),len(pos),len(part)]
     ratio=[3,1,1]
     base_num=min(nums)
+    base_num=250000
     print len(neg),len(pos),len(part),base_num
-    neg_keep = npr.choice(len(neg), size=base_num*3,replace=False)
-    pos_keep = npr.choice(len(pos), size=base_num,replace=False)
-    part_keep = npr.choice(len(part), size=base_num,replace=False)
+    neg_keep = npr.choice(len(neg), size=base_num*3,replace=True)
+    pos_keep = npr.choice(len(pos), size=base_num,replace=True)
+    part_keep = npr.choice(len(part), size=base_num,replace=True)
 
     for i in pos_keep:
         f.write(pos[i])

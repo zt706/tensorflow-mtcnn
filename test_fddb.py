@@ -1,6 +1,8 @@
 import numpy as np
 import argparse
 import sys
+import os
+os.environ.setdefault('CUDA_VISIBLE_DEVICES','3')
 sys.path.insert(0, "/home/zhangboyu/tensorflow/_python_build")
 from core.model import P_Net, R_Net, O_Net
 from core.imdb import IMDB
@@ -18,8 +20,7 @@ def test_net(root_path, dataset_path, prefix, epoch,
 
     detectors = [None, None, None]
 
-    model_path=['%s-%s'%(prefix,epoch) for x,y in zip(prefix,epoch)]
-
+    model_path=['%s-%s'%(x,y) for x,y in zip(prefix,epoch)]
     # load pnet model
     if slide_window:
         PNet = Detector(P_Net, 12, batch_size[0],model_path[0])
@@ -57,9 +58,9 @@ def parse_args():
     parser.add_argument('--dataset_path', dest='dataset_path', help='dataset folder',
                         default='./data/fddb', type=str)
     parser.add_argument('--test_mode', dest='test_mode', help='test net type, can be pnet, rnet or onet',
-                        default='pnet', type=str)
+                        default='onet', type=str)
     parser.add_argument('--prefix', dest='prefix', help='prefix of model name', nargs="+",
-                        default=['./data/model/pnet', './data/model/rnet', './data/model/onet'], type=str)
+                        default=['./data/wider_model/pnet', './data/wider_model/rnet', './data/wider_model/onet'], type=str)
     parser.add_argument('--epoch', dest='epoch', help='epoch number of model to load', nargs="+",
                         default=[16, 16, 16], type=int)
     parser.add_argument('--batch_size', dest='batch_size', help='list of batch size used in prediction', nargs="+",
